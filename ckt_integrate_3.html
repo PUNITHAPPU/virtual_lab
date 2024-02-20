@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step-by-Step Zbus Matrix Generator</title>
+  <style>
+    * {
+  color: rgb(177, 217, 236);
+  
+}
+    body {
+      font-family: Arial, sans-serif;
+      padding:20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    select, input {
+      margin-bottom: 10px;
+    }
+    #transmissionLineInputs {
+      display: none;
+    }
+    #circuitCanvas {
+            
+      height: 100%;
+      width: 50%;
+      position: relative;
+      z-index: 1;
+      top: 0;right: 0;bottom: 1px;
+      overflow-x: hidden;
+      padding-top: 20px;
+      float:right;
+      margin: 20px;
+      border: 1px solid #e7eaf3;
+        }
+        video{
+            height: 100%;
+      width: 40%;
+      position: relative;
+      z-index: 1;
+      top: 0;right: 0;bottom: 1px;
+      overflow-x: hidden;
+      padding-top: 20px;
+      float:right;
+      margin: 20px;
+      border: 5px solid #a0d2eb;
+      border-radius: 10px;
+            
+            padding: 5px;
+        }
+    .matrix-container {
+      
+      margin-top: 5px;
+      color: aliceblue;
+      border-top: 10px0px solid #f3f2f4;
+      padding-top: 20px;
+    }
+    
+    select, input {
+            border-color: rgb(160,210,234);
+            box-sizing: border-box;
+            background-color: rgb(73,77,96);
+            border-radius: 8px;
+            
+            padding: 5px;
+            
+         }
+    ::placeholder {
+        color: rgb(231, 233, 246);
+        opacity: 1; /* Firefox */
+      }
+      button {
+  background-color: #e7eaf3; 
+  border: none;
+  color: #494d60;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;border-radius: 8px;
+            
+            padding:10px;
+}
+#infoContainer {
+      margin-top: 20px;
+    }
+
+    #zbusForm {
+      display: none;
+    }
+    .procedure {
+      display: none;
+    }
+
+
+      body{
+        background-color: rgb(51, 55, 78);;
+          }
+          
+          
+        
+    
+
+  </style>
+</head>
+<body>
+  <div class="heading">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7IdP2hgPYVZN6GJ8uGMZefMtOeLxTuOek2RR5sx9vLw&s">
+    <h1>Step-by-Step Zbus Matrix Generator</h1>
+</div>
+
+<hr>
+<hr>
+<div class="first_heading">
+  <div class="intro">
+    <h2>
+        Under the guidance of:
+    </h2>
+    <h3>
+        &ensp;Sushmita Sarkar
+    </h3>
+    <p>
+        &ensp; Assistant Professor
+    </p>
+
+    <h3>
+        Student Details :
+    </h3>
+    <p>
+        &ensp; Balaraj B Naik- 1RV20EE012
+    </p>
+    
+    <p>
+        &ensp; Nitin S - 1RV20EE035
+    </p>
+    <p>
+        &ensp; Punith R C - 1RV20EE040
+    </p>
+    
+  </div>
+
+  
+
+  <!-- <h3>Youtube video autoplay</h3>
+  <iframe width="500px" src="https://drive.google.com/file/d/1EKtoSKXKzVK70hx5FSrCvC4Y7KAQuYLg/view?usp=sharing">
+  </iframe> -->
+
+<hr>
+<hr>
+<div id="infoContainer">
+    <h1>Formation of Bus Impedance Matrix</h1>
+    <h2>Theory :</h2>
+    <p>
+        &ensp;Note: Zbus Should Start with the Reference Node
+    </p>
+    <h2>
+        &ensp;Types of Modification of Zbus
+    </h2>
+    <h3>
+        &ensp; 1. Adddition of Branch p-q ,q is a new node p is a reference Node (Type 1 Modification)
+    </h3>
+
+    <p>
+        &ensp;&ensp;&ensp;&ensp;Zqi = 0
+    </p>
+    <p>
+        &ensp;&ensp;&ensp;&ensp;Zqq = z<sub>pq,pq</sub> 
+    </p>
+    <h3>
+        &ensp; 2. Adddition of Branch p-q ,q is a new node p is a Node existing in the network (Type 2 Modification)
+    </h3>
+
+    <p>
+        &ensp;&ensp;&ensp;&ensp;Zqi = Zpi
+    </p>
+    <p>
+        &ensp;&ensp;&ensp;&ensp;Zqq = Z<sub>pq</sub>+z<sub>pq,pq</sub> 
+    </p>
+    <h3>
+        &ensp; 3. Adddition of Link p-q ,q is a  Existing Node and p is reference Node (Type 3 Modification)
+        <p>
+            &ensp;&ensp;&ensp;&ensp;Add Lth Row and Lth column such that: 
+        </p>
+    <p>
+        &ensp;&ensp;&ensp;&ensp;Z<sub>li</sub> = -Zqi
+    </p>
+    <p>
+        &ensp;&ensp;&ensp;&ensp;Z<sub>ll</sub> = -Z<sub>ql</sub>+z<sub>pq,pq</sub> 
+    </p>
+    <p>
+        &ensp;&ensp;&ensp;&ensp;Now Modify the whole matrix deleting Lth row and column with below Modification Formula:  
+    </p>
+    <p>
+        &ensp;&ensp;&ensp;&ensp;Z<sub>ij(mod)</sub> = Z<sub>ij(old)</sub> - ((Z<sub>il</sub> * Z<sub>lj</sub> ) / Z<sub>ll</sub>)
+    </p>
+
+    <h3>
+        &ensp; 4. Adddition of Link p-q ,q is a  Existing Node and p is also existing bus (Type 4 Modification)
+        <p>
+            &ensp;&ensp;&ensp;&ensp;Add Lth Row and Lth column such that: 
+        </p>
+    <p>
+        &ensp;&ensp;&ensp;&ensp;Z<sub>li</sub> = Zpi - Zqi
+    </p>
+    <p>
+        &ensp;&ensp;&ensp;&ensp;Z<sub>ll</sub> =Z<sub>pl</sub> - Z<sub>ql</sub>+z<sub>pq,pq</sub> 
+    </p>
+    <p>
+        &ensp;&ensp;&ensp;&ensp;Now Modify the whole matrix deleting Lth row and column with below Modification Formula:  
+    </p>
+    <p>
+        &ensp;&ensp;&ensp;&ensp;Z<sub>ij(mod)</sub> = Z<sub>ij(old)</sub> - ((Z<sub>il</sub> * Z<sub>lj</sub> ) / Z<sub>ll</sub>)
+    </p>
+    <!-- Add more information as needed... -->
+  
+    <!-- Proceed to Virtual Lab button -->
+    <button type="button" id="virtualLabBtn" onclick="showZbusForm()">Proceed to Vlab</button>
+  </div>
+  <div class="procedure" >
+    <h3>Procedure : </h3>
+    <video width="200" controls autoplay muted loop>
+        <source src="3.mp4" type="video/mp4">
+    </video>
+    <ol style="line-height:180%">
+        <li>Enter number of buses and transmission line</li>
+        <li>
+          Specify from bus and to bus </li>
+        <li>
+          Enter respective impedances </li>
+        <li>
+          Click update zbus matrix</li>
+        <li>
+          For handling case pop up, press ok</li>
+        <li>
+          Repeat above steps for all buses</li>
+        <li>
+          Modified bus press ok</li>
+        <li>
+          All transmission lines are added, ready for adding or removal of transmission lines</li>
+        <li> For adding transmission lines:</li>
+            <ol type="i">
+              <li>Select from bus and to bus across which the operation is to be made </li>
+              <li>Enter respective impedance</li>
+              <li>Press add transmission line</li>
+            </ol>
+            
+        
+        <li>For removing transmission lines:
+          <ol type="i">
+          <li>Select from bus and to bus across which the operation is to be made</li>
+          <li>Enter respective impedance</li>
+          <li>Press remove transmission line</li></ol>
+        </li>
+    </ol>
+    <hr>
+    <hr>
+  </div>
+
+</div>
+
+
+
+<form id="zbusForm">
+  <label for="numberOfBuses">Number of Buses:
+  <br>
+  <input type="number" id="numberOfBuses" name="numberOfBuses" min="2" required>
+  
+  <label for="numberOfLines">Number of Transmission Lines:</label>
+  <input type="number" id="numberOfLines" name="numberOfLines" min="1" required>
+
+  <div id="transmissionLineInputs"></div><br><br>
+
+  <button type="button" id="updateZbus" onclick="updateZbusMatrix()">Update Zbus Matrix</button>
+  <br><button type="button" id="addLineBtn" onclick="addTransmissionLine()" style="display: none;">Add Transmission Line</button>
+  &ensp; <button type="button" id="removeLineBtn" onclick="removeTransmissionLine()" style="display: none;">Remove Transmission Line</button>
+  <canvas id="circuitCanvas" width="800" height="400"></canvas>
+  
+  <br><br><button type="button" id="resetFormBtn" onclick="resetForm()">Reset Form</button>
+  <br><br><button onclick="generateDiagram()">Generate circuit Diagram</button>
+  &ensp;<br><br><button onclick="clearCanvas()">Reset circuit diagram</button>
+  <div id="messageContainer"></div>
+  <div id="matrixContainer" class="matrix-container"></div>
+  
+</form>
+
+<script>
+  let currentLine = 1;
+  let busArray = [];
+  let busArray1 = [];
+  let imparr=[];
+  let connect = 0;
+  let Zbus = [[100]];
+  let fromBus = 100;
+  let toBus = 100;
+  let impedance = 100;
+  let refcnt = 0;
+  let matrixTable;
+  let nol;
+  let lineno=0;
+let newZbus1;
+let impBus;
+let type=[];
+
+
+  function initializeZbusMatrix() {
+    Zbus = [[0]];
+    
+    impBus = Array.from({ length: 10 }, () => Array(10).fill(0));
+    matrixTable = createMatrixTable(Zbus);
+    updateMatrixContainer(matrixTable);
+  }
+
+  function updateMatrixContainer(table) {
+    const matrixContainer = document.getElementById('matrixContainer');
+    matrixContainer.appendChild(table.cloneNode(true));
+  }
+
+  function dispZbus(matrix) {
+    updateMatrixTable(matrix);
+  }
+
+
+  function showZbusForm() {
+    // Hide the information container and display the Zbus form
+    document.getElementById('infoContainer').style.display = 'none';
+    document.getElementById('zbusForm').style.display = 'block';
+    document.querySelector('.procedure').style.display = 'block';
+  }
+
+  function createMatrixTable(matrix) {
+    const table = document.createElement('table');
+    table.style.borderCollapse = 'collapse';
+
+    for (let i = 0; i < matrix.length + 1; i++) {
+      const row = table.insertRow();
+      for (let j = 0; j < matrix[0].length + 1; j++) {
+        const cell = row.insertCell();
+        cell.style.border = '1px solid #ddd';
+        cell.style.padding = '8px';
+        cell.style.textAlign = 'center';
+
+        if (i === 0 && j === 0) {
+    
+          cell.textContent = '';
+        } else if (i === 0) {
+          
+          cell.textContent = `bus ${j}`;
+        } else if (j === 0) {
+          
+          cell.textContent = `bus ${i}`;
+        } else {
+         
+          const formattedValue = matrix[i - 1][j - 1].toFixed(5);
+          cell.textContent = formattedValue + 'i';
+        }
+      }
+    }
+
+    return table;
+  }
+
+  function updateMatrixTable(matrix) {
+    
+    matrixTable.innerHTML = '';
+
+    for (let i = 0; i < matrix.length; i++) {
+      const row = matrixTable.insertRow();
+      for (let j = 0; j < matrix[i].length; j++) {
+        const cell = row.insertCell();
+        const formattedValue = matrix[i][j].toFixed(5); 
+        cell.textContent = formattedValue + 'i';
+      }
+    }
+    
+  }
+
+  function updateZbusMatrix() {
+    
+    
+    const fromBusSelect = document.getElementById(`fromBus${currentLine}`);
+    const toBusSelect = document.getElementById(`toBus${currentLine}`);
+    const impedanceInput = document.getElementById(`impedance${currentLine}`);
+
+    fromBus = parseInt(fromBusSelect.value);
+    toBus = parseInt(toBusSelect.value);
+    impedance = parseFloat(impedanceInput.value);
+
+    if (fromBus == toBus) {
+      alert('From Bus and To Bus cannot be the same.');
+      return;
+    }
+
+    classifyAndUpdateConnectionType(fromBus, toBus, impedance);
+
+    const messageContainer = document.getElementById('messageContainer');
+
+    
+    const caseContainer = document.createElement('div');
+    caseContainer.classList.add('matrix-container');
+
+    
+    const caseMessage = document.createElement('p');
+    if (connect == 1) {
+      caseMessage.innerHTML = `Handling Case(${connect}):&nbsp; refBus (${0}) to New Bus (${toBus}).<br><br>
+        Updated Zbus matrix for connection from Bus ${fromBus} to Bus ${toBus}.  with impedance ${impedance} i<br>`;
+    } else if (connect == 2) {
+      caseMessage.innerHTML = `Handling Case(${connect}):&nbsp; Existing Bus (${fromBus}) to New Bus (${toBus}).<br><br>
+        Updated Zbus matrix for connection :  from Bus ${fromBus} to Bus ${toBus}.  with impedance ${impedance} i<br>`;
+    } else if (connect == 3) {
+      caseMessage.innerHTML = `Handling Case(${connect}):&nbsp; Existing Bus (${fromBus}) to Ref Bus (${0}).<br><br>
+        Updated Zbus matrix for connection :  from Bus ${fromBus} to Bus ${toBus}.  with impedance ${impedance} i<br>`;
+    } else {
+      caseMessage.innerHTML = `Handling Case(${connect}):&nbsp; Existing Bus (${fromBus}) to Existing Bus (${toBus}).<br><br>
+        Modified Zbus matrix after connection: from Bus ${fromBus} to Bus ${toBus}.  with impedance ${impedance} i<br>`;
+    }
+    caseContainer.appendChild(caseMessage);
+
+    
+    const caseTable = createMatrixTable(Zbus);
+    caseContainer.appendChild(caseTable);
+
+    
+    updateMatrixContainer(caseContainer);
+
+    
+
+    if (currentLine+1 > parseInt(document.getElementById('numberOfLines').value)) {
+      //displayFinalZbusMatrix();
+      alert('ALL Transmission line data is computed ,now add or remove transmssion line')
+      document.getElementById('addLineBtn').style.display = 'inline-block';
+      document.getElementById('removeLineBtn').style.display = 'inline-block';
+      currentLine++;
+      showNextTransmissionLineInputs();
+      
+    } else {
+        currentLine++;
+      showNextTransmissionLineInputs();
+    }
+    generateDiagram();
+  }
+
+  function displayFinalZbusMatrix() {
+    alert('Final Zbus Matrix will be displayed here.');
+  }
+
+  function showNextTransmissionLineInputs() {
+    const transmissionLineInputs = document.getElementById('transmissionLineInputs');
+    transmissionLineInputs.innerHTML = '';
+
+    const fromBusLabel = document.createElement('label');
+    fromBusLabel.textContent = `From Bus ${currentLine}:`;
+
+    const fromBusSelect = document.createElement('select');
+    fromBusSelect.id = `fromBus${currentLine}`;
+    fromBusSelect.name = `fromBus${currentLine}`;
+    fromBusSelect.required = true;
+
+    const toBusLabel = document.createElement('label');
+    toBusLabel.textContent = `To Bus ${currentLine}:`;
+
+    const toBusSelect = document.createElement('select');
+    toBusSelect.id = `toBus${currentLine}`;
+    toBusSelect.name = `toBus${currentLine}`;
+    toBusSelect.required = true;
+
+    const impedanceLabel = document.createElement('label');
+    impedanceLabel.textContent = `Impedance ${currentLine}:`;
+
+    const impedanceInput = document.createElement('input');
+    impedanceInput.type = 'number';
+    impedanceInput.step='any';
+    impedanceInput.id = `impedance${currentLine}`;
+    impedanceInput.name = `impedance${currentLine}`;
+    impedanceInput.placeholder = 'Enter complex impedance';
+    impedanceInput.required = true;
+
+    transmissionLineInputs.appendChild(fromBusLabel);
+    transmissionLineInputs.appendChild(fromBusSelect);
+    transmissionLineInputs.appendChild(toBusLabel);
+    transmissionLineInputs.appendChild(toBusSelect);
+    transmissionLineInputs.appendChild(impedanceLabel);
+    transmissionLineInputs.appendChild(impedanceInput);
+
+    const numberOfBuses = parseInt(document.getElementById('numberOfBuses').value);
+    for (let i = 0; i < numberOfBuses; i++) {
+      const option = document.createElement('option');
+      option.value = i;
+      option.text = `Bus ${i}`;
+      document.getElementById(`fromBus${currentLine}`).add(option.cloneNode(true));
+      document.getElementById(`toBus${currentLine}`).add(option.cloneNode(true));
+    }
+  }
+
+  function classifyAndUpdateConnectionType(fb, tb, imp) {
+    console.log(`fb: ${fb}, tb: ${tb}, busArray: ${busArray}, busArray1: ${busArray1}`);
+    impBus[fb][tb]=imp;
+
+    if (fb === 0 && !busArray1.includes(tb)) {
+      connect = 1;
+      refToNew(fb, tb, imp);
+    } else if ((busArray.includes(fb) || busArray1.includes(fb)) && (!busArray1.includes(tb) || !busArray1.includes(tb)) && (fb != 0 && tb != 0)) {
+      connect = 2;
+      existToNew(fb, tb, imp);
+    } else if ((busArray.includes(fb) || busArray1.includes(fb)) && tb === 0) {
+      connect = 3;
+      existToRef(fb, tb, imp);
+    } else if ((busArray.includes(fb) || busArray1.includes(fb)) && (busArray1.includes(tb) || busArray1.includes(tb)) && (fb != 0 && tb != 0)) {
+      connect = 4;
+      existToExist(fb, tb, imp);
+    }
+
+    busArray.push(fromBus);
+    busArray1.push(toBus);
+    imparr.push(imp);
+    console.log(`fb: ${fb}, tb: ${tb}, busArray: ${busArray}, busArray1: ${busArray1}`);
+  }
+
+  function refToNew(ref, newBus, imp1) {
+    alert(`Handling Case: REF BUS (${ref}) to New Bus (${newBus}).`);
+
+    if (refcnt === 0) {
+      Zbus[0][0] = imp1;
+    } else {
+      const newSize = Zbus.length + 1;
+      const newZbus = Array.from({ length: newSize }, () => Array(newSize).fill(0));
+
+      
+      for (let i = 0; i < newSize - 1; i++) {
+        for (let j = 0; j < newSize - 1; j++) {
+          newZbus[i][j] = Zbus[i][j];
+        }
+      }
+
+      newZbus[newSize - 1][newSize - 1] = imp1;
+      
+      Zbus = newZbus;
+    }
+
+    
+    dispZbus(Zbus);
+    refcnt++;
+    //generateDiagram();
+  }
+
+  function existToNew(existingBus, newBus, impedance) {
+    alert(`Handling Case: Existing Bus (${existingBus}) to New Bus (${newBus}).`);
+
+    
+    const newSize = Zbus.length + 1;
+    const newZbus = Array.from({ length: newSize }, () => Array(newSize).fill(0));
+
+    
+    for (let i = 0; i < newSize - 1; i++) {
+      for (let j = 0; j < newSize - 1; j++) {
+        newZbus[i][j] = Zbus[i][j];
+      }
+    }
+    let i = 0;
+    
+    for (i = 0; i < newSize - 1; i++) {
+      newZbus[i][newSize - 1] = Zbus[i][existingBus - 1];
+      newZbus[newSize - 1][i] = Zbus[existingBus - 1][i];
+    }
+
+    
+    newZbus[newSize - 1][newSize - 1] = newZbus[existingBus - 1][newSize - 1] + impedance;
+
+    
+    Zbus = newZbus;
+
+   
+    dispZbus(Zbus);
+  }
+
+  function existToRef(existingBus, ref, impedance) {
+    alert(`Handling Case: Existing Bus (${existingBus}) to Reference Bus.`);
+    const newSize = Zbus.length + 1;
+    newZbus1 = Array.from({ length: newSize }, () => Array(newSize).fill(0));
+    
+    for (let i = 0; i < newSize - 1; i++) {
+      for (let j = 0; j < newSize - 1; j++) {
+        newZbus1[i][j] = Zbus[i][j];
+      }
+    }
+
+   
+    const L = newSize - 1;
+
+    
+    for (let i = 0; i < newSize - 1; i++) {
+      newZbus1[L][i] = -Zbus[existingBus-1][i];
+      newZbus1[i][L] = -Zbus[i][existingBus-1];
+    }
+
+    
+    newZbus1[L][L] = -newZbus1[existingBus-1][L]+impedance;
+    alert("Modified Zbus");
+    
+    //dispZbus(newZbus1);
+    // Update the existing matrix using the formula (Zij MOD=Zij OLD-((Zil*Zlj)/ZLL))
+    const ZLL = newZbus1[L][L];
+    for (let i = 0; i < newSize - 1; i++) {
+      for (let j = 0; j < newSize - 1; j++) {
+        newZbus1[i][j] -= (newZbus1[i][L] * newZbus1[L][j]) / ZLL;
+        newZbus1[i][j] = parseFloat(newZbus1[i][j].toPrecision(5));
+      }
+    }
+
+    // Remove the Lth row and column
+    newZbus1.splice(L, 1);
+    for (let i = 0; i < newSize - 1; i++) {
+      newZbus1[i].splice(L, 1);
+    }
+
+    // Update the Zbus matrix
+    Zbus = newZbus1;
+
+    // Display the updated Zbus matrix
+    dispZbus(Zbus);
+    //generateDiagram();
+  }
+
+  function existToExist(p, q, impedance) {
+    alert(`Handling Case: Between Existing Bus (${p}) and Existing Bus (${q}).`);
+    console.log('Zbus:', Zbus);
+
+    const newSize = Zbus.length + 1;
+    let newZbus3 = Array.from({ length: newSize }, () => Array(newSize).fill(0));
+    console.log('newZbus3:', newZbus3);
+
+    
+    for (let i = 0; i < newSize - 1; i++) {
+        for (let j = 0; j < newSize - 1; j++) {
+            newZbus3[i][j] = Zbus[i][j];
+        }
+    }
+
+    console.log('newZbus3 (After Copy):', newZbus3);
+
+    
+    const L = newSize - 1;
+
+    
+    for (let i = 0; i < newSize - 1; i++) {
+        newZbus3[L][i] = Zbus[p - 1][i] - Zbus[q - 1][i];
+        newZbus3[i][L] = Zbus[i][p - 1] - Zbus[i][q - 1];
+    }
+
+    // Update the diagonal element of the new row and column
+    newZbus3[L][L] = newZbus3[p - 1][L] - newZbus3[q - 1][L] + impedance;
+
+    console.log('newZbus3 (After Update):', newZbus3);
+    //dispZbus(newZbus3);
+
+    // Update the existing matrix using the formula (Zij MOD=Zij OLD-((Zil*Zlj)/ZLL))
+    const ZLL = newZbus3[L][L];
+    for (let i = 0; i < newSize - 1; i++) {
+      for (let j = 0; j < newSize - 1; j++) {
+        newZbus3[i][j] =newZbus3[i][j]-(((newZbus3[i][L]) * (newZbus3[L][j])) / ZLL);
+        newZbus3[i][j] = parseFloat(newZbus3[i][j].toPrecision(5));
+      }
+    }
+    
+    newZbus3.splice(L, 1);
+    for (let i = 0; i < newSize - 1; i++) {
+      newZbus3[i].splice(L, 1);
+    }
+    Zbus = newZbus3;
+
+    console.log('Zbus (After Matrix Update):', Zbus);
+
+    // Display the updated Zbus matrix
+    dispZbus(Zbus);
+    
+}
+
+function addTransmissionLine() {
+    alert(`adding transmission line`);
+    
+    
+    const fromBusSelect = document.getElementById(`fromBus${currentLine}`);
+  const toBusSelect = document.getElementById(`toBus${currentLine}`);
+  const impedanceInput = document.getElementById(`impedance${currentLine}`);
+
+  
+  
+    fromBus = parseInt(fromBusSelect.value);
+    toBus = parseInt(toBusSelect.value);
+    impedance = parseFloat(impedanceInput.value);
+    
+    const messageContainer = document.getElementById('messageContainer');
+
+    // Create a new div for the current case
+    const caseContainer = document.createElement('div');
+    caseContainer.classList.add('matrix-container');
+
+    
+    const caseMessage = document.createElement('p');
+      caseMessage.innerHTML = `After adding a transmission line between ${fromBus}-${toBus} impedace resultin in ${impedance}i <br>The updated Zbus matrix is:`;
+    
+    caseContainer.appendChild(caseMessage);
+    let imp=0.0;
+    
+    imp=((impedance*impBus[fromBus][toBus])/(impBus[fromBus][toBus]-impedance));
+    console.log('new imp', imp);
+    existToExist(fromBus,toBus,imp);
+    currentLine++;
+    showNextTransmissionLineInputs();
+  
+
+    // Display the updated Zbus matrix for the current case
+    const caseTable = createMatrixTable(Zbus);
+    caseContainer.appendChild(caseTable);
+
+   
+    updateMatrixContainer(caseContainer);
+    let index=0;
+    //index=busArray.indexOf(fromBus);
+   
+      for(let i=0;i<busArray.length;i++)
+    {
+      if((busArray[i]===fromBus)&&(busArray1[i]===toBus))
+      {
+        index=i;
+      }
+    }
+    if(index!=0)
+    {
+        imparr[index]=impedance;
+    }
+    
+    else
+    {
+    busArray.push(fromBus);
+    busArray1.push(toBus);
+    imparr.push(impedance);
+    }
+    console.log('a1 add', busArray);
+    console.log('a2 add:', busArray1);
+    generateDiagram();
+}
+
+function removeTransmissionLine() {
+  alert(`removing Transmission line`);
+  
+  
+  
+  const currentLineToRemove =  currentLine;
+
+  
+  const fromBusSelect = document.getElementById(`fromBus${currentLine}`);
+  const toBusSelect = document.getElementById(`toBus${currentLine}`);
+  const impedanceInput = document.getElementById(`impedance${currentLine}`);
+
+  
+  
+    fromBus = parseInt(fromBusSelect.value);
+    toBus = parseInt(toBusSelect.value);
+    impedance = parseFloat(impedanceInput.value);
+    
+    //imparray.push(impedance);
+    const messageContainer = document.getElementById('messageContainer');
+
+    
+    const caseContainer = document.createElement('div');
+    caseContainer.classList.add('matrix-container');
+
+    
+    const caseMessage = document.createElement('p');
+      caseMessage.innerHTML = `AFTER REMOVING TRANSMISSION LINE ${fromBus} - ${toBus} THE UPDATED MATRIX IS `;
+    
+    caseContainer.appendChild(caseMessage);
+    existToExist(fromBus, toBus, impedance);
+    currentLine++;
+    showNextTransmissionLineInputs();
+  
+
+    // Display the updated Zbus matrix for the current case
+    const caseTable = createMatrixTable(Zbus);
+    caseContainer.appendChild(caseTable);
+
+    // Append the current case container to the matrixContainer
+    updateMatrixContainer(caseContainer);
+    let ind = 0;
+    //let ind1 = busArray1.indexOf(toBus);
+    //let ind2 = imparr.indexOf(-impedance);
+    for(let i=0;i<busArray.length;i++)
+    {
+      if((busArray[i]===fromBus)&&(busArray1[i]===toBus))
+      {
+        ind=i;
+      }
+    }
+    busArray.splice(ind,1);
+    busArray1.splice(ind,1);
+    imparr.splice(ind,1);
+    console.log('a1 splice:', busArray);
+    console.log('a2 splice:', busArray1);
+    generateDiagram();
+}
+
+function resetForm() {
+    
+    document.getElementById('zbusForm').reset();
+
+   
+    currentLine = 1;
+    busArray = [];
+    busArray1 = [];
+    connect = 0;
+    Zbus = [[]];
+    fromBus = 100;
+    toBus = 100;
+    impedance = 100;
+    refcnt = 0;
+    matrixTable = null;
+    nol = null;
+    newZbus1 = null;
+    impBus = null;
+
+    
+    const matrixContainer = document.getElementById('matrixContainer');
+    matrixContainer.innerHTML = '';
+
+    
+    document.getElementById('transmissionLineInputs').style.display = 'none';
+    document.getElementById('addLineBtn').style.display = 'none';
+    document.getElementById('removeLineBtn').style.display = 'none';
+
+    clearCanvas();
+    initializeZbusMatrix();
+  }
+
+  function generateDiagram() {
+            const busCount = Math.max(Math.max(...busArray),Math.max(...busArray1))+1;
+            const lineCount = busArray.length;
+
+            // Generate circuit diagram using Canvas
+            generateCircuit(busCount, lineCount);
+        }
+
+        function generateCircuit(busCount, lineCount) {
+            const canvas = document.getElementById('circuitCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Clear previous drawings
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = '18px Arial';
+    ctx.fillStyle = 'black';
+    ctx.fillText('Circuit Diagram', canvas.width / 2 - 80, 30);
+            // Generate bus nodes in a clockwise order
+            const gridSize = 100;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const busNodes = [];
+
+            for (let i = 0; i < busCount; i++) {
+                const angle = (i / busCount) * 2 * Math.PI;
+                const x = centerX + Math.cos(angle) * gridSize;
+                const y = centerY + Math.sin(angle) * gridSize;
+                busNodes.push({ id: i, x, y });
+            }
+
+            // Draw bus nodes
+            busNodes.forEach(node => {
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 10, 0, 2 * Math.PI);
+                ctx.fillStyle = 'blue';
+                ctx.fill();
+                ctx.stroke();
+                ctx.font = '12px Arial';
+                ctx.fillStyle = 'black';
+                ctx.fillText(`Bus ${node.id}`, node.x - 15, node.y - 15);
+                ctx.closePath();
+            });
+
+            // Draw lines for each transmission line
+            // Draw lines for each transmission line
+// Draw lines for each transmission line
+for (let i = 0; i < lineCount; i++) {
+    const fromBus = busArray[i];
+    const toBus = busArray1[i];
+    const impedance = imparr[i];
+
+    // Check if indices are within bounds
+    if (fromBus >= 0 && fromBus < busNodes.length && toBus >= 0 && toBus < busNodes.length) {
+        // Draw line
+        ctx.beginPath();
+        ctx.moveTo(busNodes[fromBus].x, busNodes[fromBus].y);
+        ctx.lineTo(busNodes[toBus].x, busNodes[toBus].y);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.closePath();
+
+        // Draw text (impedance) near the middle of the line
+        const textX = ((busNodes[fromBus].x + busNodes[toBus].x) / 2);
+        const textY = ((busNodes[fromBus].y + busNodes[toBus].y) / 2);
+        ctx.font = '12px Arial';
+        ctx.fillStyle = 'black';
+        ctx.fillText(`${impedance}i`, textX, textY);
+    } else {
+        console.error(`Invalid indices: fromBus=${fromBus}, toBus=${toBus}`);
+    }
+}
+
+
+        }
+
+        function clearCanvas() {
+    const canvas = document.getElementById('circuitCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+
+
+
+
+  document.getElementById('numberOfLines').addEventListener('input', function () {
+    initializeZbusMatrix();
+    showNextTransmissionLineInputs();
+    document.getElementById('transmissionLineInputs').style.display = 'block';
+    document.getElementById('updateZbus').style.display = 'block';
+  });
+</script>
+</body>
+</html>
