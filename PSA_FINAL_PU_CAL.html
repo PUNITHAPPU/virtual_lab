@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        /* table, tr,td{
+            border: 3px solid rgb(102, 252, 241);
+        } */
+        table th, td {
+            border: 1px solid rgb(102, 252, 241);
+            border-radius: 5px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            border-spacing: 30px;
+            text-align: center;
+            
+        }
+        .intro{
+            font-size: 20px;
+        }
+        body{
+            background-color: rgb(32, 40,51);
+        }
+        font{
+            color: rgb(102, 252, 241);
+        }
+        div.heading{
+            color: rgb(102, 252, 241);
+        }
+        div.intro{
+            color: rgb(197, 198,200);
+        }
+        div.procedure{
+            color: rgb(70, 162, 159);
+        }
+
+        input {
+            
+            box-sizing: border-box;
+            background-color: rgb(197, 198,200);
+            border-radius: 5px;
+            
+            padding: 5px;
+            
+         }
+         input.specifyBaseMVA {
+            width: 20px;
+            height: 20px;
+        }
+        th {
+            color: rgb(70, 162, 159);
+            
+        }
+        tr{
+            color: rgb(197, 198,200);
+        }
+        
+        
+        
+    </style>
+</head>
+<body>
+    <div class="heading">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7IdP2hgPYVZN6GJ8uGMZefMtOeLxTuOek2RR5sx9vLw&s">
+        <h1>GUI Implementation Sequnce Impedance per Unit Calculation</h1>
+    </div>
+
+    <hr>
+    <hr>
+
+    <div class="intro">
+        <h2>
+            Under the guidance of:
+        </h2>
+        <h3>
+            &ensp;Sushmita Sarkar
+        </h3>
+        <p>
+            &ensp; Assistant Professor
+        </p>
+
+        <h3>
+            Student Details :
+        </h3>
+        <p>
+            &ensp; Balaraj B Naik- 1RV20EE012
+        </p>
+        <p>
+            &ensp; Nithyashekhar S- 1RV20EE034
+        </p>
+        <p>
+            &ensp; Nitin S - 1RV20EE035
+        </p>
+        <p>
+            &ensp; Punith R C - 1RV20EE040
+        </p>
+        
+    </div>
+    <hr>
+    <hr>
+
+    
+    <div class="procedure" >
+        <h3>Procedure : </h3>
+        <ol>
+            <li>Enter the number of components</li>
+            <li>
+                If the base MVA is to be specified select the tick box else select "create table".
+            </li>
+            <li>
+                Enter respective component's voltage and MVA rating, with reactance in percentage.
+            </li>
+            <li>
+                Fill all Transformer details with primary and secondary rating with respective reactance.
+            </li>
+            <li>
+                Once the rating are entered select "ADD CONNECTION DETAILS", select transformers connected across.
+            </li>
+            <li>
+                Select "Display CONNECTION Details" to verify the reactance and base voltage selected for calculations.
+            </li>
+            <li>
+                If base value is to be specified press "PROCEED", then enter Base MVA.
+            </li>
+            <li>
+                Once all the parameters are entered, proceed by clicking "SHOWX".
+            </li>
+            <li>
+                Reactance of all parameters are displayed.
+            </li>
+            <li>
+                If values are to be rentered, select reset.
+            </li>
+        </ol>
+    </div>
+
+    
+
+
+
+
+    <h2 style="color: rgb(197, 198, 200);">Enter the number of components:</h2>
+    <form style="color: rgb(197, 198, 200);">
+        <label for="numGenerators">Number of Generators:</label>
+        <input type="number" id="numGenerators" name="numGenerators"><br>
+        <br>
+
+        <label for="numTransformers">Number of Transformers:</label>
+        <input type="number" id="numTransformers" name="numTransformers"><br>
+        <br>
+        <label for="numLoad">Number of Load:</label>
+        <input type="number" id="numLoad" name="numLoad"><br>
+        <br>
+        <label for="numTransmissionLines">Number of Transmission Lines:</label>
+        <input type="number" id="numTransmissionLines" name="numTransmissionLines"><br>
+        <br>
+        <label for="numMotors">Number of Motors:</label>
+        <input type="number" id="numMotors" name="numMotors"><br>
+        <br>
+        <!-- Add similar input fields for numBuses, numTransmissionLines, and numMotors -->
+
+        <input type="button" value="Create Table" onclick="createTable()">
+        <label for="specifyBaseMVA">Specify Base MVA:</label>
+        <input class="specifyBaseMVA" type="checkbox" id="specifyBaseMVA" name="specifyBaseMVA" >
+        
+    </form>
+    <br>
+    <hr />
+    <h2 style="color: rgb(197, 198, 200);">COMPONENT PARAMETERS TABLE :</h2>
+    <div id="tableContainer"></div>
+    
+    <div id="tableContainer1"></div>
+    <div id="tableContainer2"></div>
+    <div id="tableContainer7"></div>
+    
+    <h3 style="color: rgb(197, 198, 200);">TRANSMISSION LINE DETAILS:</h3>
+    <div id="tableContainer3"></div>
+    <div id="tableContainer5"></div>
+    <br>
+    
+    <button type="button" onclick="TL_TABLE()">ADD_CONNECTION_DETAILS</button>
+    <br>
+    <br>
+    <button type="button" onclick="calculateConnections()">DISPLAY_CONNECTION_DETAILS</button>
+    <br>
+    <div id="tableContainer4"></div>
+    <div id="tableContainer6"></div>
+    
+    <h2 style="color: rgb(197, 198, 200);">TRANSMISSION LINE TABLE:</h2>
+    <div id="baseMVAContainer"></div>
+    <div id="proceedButton"></div>
+    <div id="displayBaseMVA"></div>
+    
+    
+
+
+    
+
+
+
+    <button type="button" onclick="resetForm()">Reset</button>
+    
+    
+     <button onclick="claculate_pu_g()">SHOW X</button>
+     <h3 style="color: rgb(197, 198, 200);">GENERATOR Reactance Values (Per Unit)</h3>
+     
+     <div id="puValues"></div>
+     <h4 style="color: rgb(197, 198, 200);">TRANSFORMER Reactance Values (Per Unit)</h4>
+     <div id="puValues1"></div>
+     <h4 style="color: rgb(197, 198, 200);">MOTOR Reactance Values (Per Unit)</h4>
+     <div id="puValues2"></div>
+     <h4 style="color: rgb(197, 198, 200);">TRANSMISSION LINE Reactance Values (Per Unit)</h4>
+     <div id="puValues3"></div>
+     <h4 style="color: rgb(197, 198, 200);">LOAD Reactance Values (Per Unit)</h4>
+     <div id="puValues4"></div>
+     
+     
+    <script>
+       var numGenerators;
+       var numTransformers;
+       var numMotors;
+      var numTransmissionLines;
+      var numLoad;
+      var baseMVA;
+      var KVA_G = [];
+        var MVA_G = [];
+        var X_G = [];
+
+        var KVA_M = [];
+        var MVA_M = [];
+        var MVA_L=[];
+        var KVA_L=[];
+        var PF_L=[];
+        var X_M = [];
+        var KVA_T_P = []; 
+         var KVA_T_S = [];
+        var MVA_T = [];
+        var X_T = [];
+
+        var X_TL = [];
+        var X_TL_R=[];
+        var X_TL_I=[];
+
+        var G_BASE_V=[];
+        var T_BASE_V=[];
+        var TL_BASE_V=[];
+        var L_BASE_V=[];
+        var M_BASE_V=[]; 
+        var PU_G=[];
+        var PU_G_0=[];
+        var PU_G_N=[];
+
+        var PU_T=[];
+        var PU_TL=[];
+        var PU_TL_R=[];
+        var PU_TL_I=[];
+        var PU_TL_R_Z=[];
+        var PU_TL_I_Z=[];
+        var PU_L_R=[];
+        var PU_L_I=[];
+        
+        var PU_M=[];
+        var PU_M_0=[];
+        var PU_M_N=[];
+        var TL_CONNECTED_BASE_V=[];
+        var X_G0=[];
+        var X_GN=[];
+        var X_M0=[];
+        var X_MN=[];
+
+
+        var X_TL0=[];
+        
+
+        function createTable() 
+        {
+             numGenerators = parseInt(document.getElementById("numGenerators").value);
+             numTransformers = parseInt(document.getElementById("numTransformers").value);
+             numMotors=parseInt(document.getElementById("numMotors").value);
+             numTransmissionLines=parseInt(document.getElementById("numTransmissionLines").value);
+             numLoad=parseInt(document.getElementById("numLoad").value);
+            
+            
+            // Get values for numBuses, numTransmissionLines, and numMotors
+
+            var tableContainer = document.getElementById("tableContainer");
+            var tableHTML = '<table border="1">';
+            tableHTML += '<tr><th>Component</th><th>KV</th><th>MVA</th><th>Reactance (X)</th><th>0 SEQ_IMP</th><th>NEUTRAL_IMP</th></tr>';
+
+            for (var i = 0; i < numGenerators; i++) {
+                tableHTML += '<tr>';
+                tableHTML += '<td>Generator G' + i + '</td>';
+                tableHTML += '<td><input type="number" id="KVA_G' + i + '"></td>';
+                tableHTML += '<td><input type="number" id="MVA_G' + i + '"></td>';
+                tableHTML += '<td><input type="number" id="X_G' + i + '"></td>';
+                tableHTML += '<td><input type="number" id="X_G0' + i + '"></td>';
+                tableHTML += '<td><input type="number" id="X_GN' + i + '"></td>';
+                tableHTML += '</tr>';
+                
+            }
+
+            
+            for (var i = 0; i < numMotors; i++) 
+            {
+                tableHTML += '<tr>';
+                tableHTML += '<td>Motor M' + i + '</td>';
+                tableHTML += '<td><input type="number" id="KVA_M' + i + '"></td>';
+                tableHTML += '<td><input type="number" id="MVA_M' + i + '"></td>';
+                tableHTML += '<td><input type="number" id="X_M' + i + '"></td>';
+                tableHTML += '<td><input type="number" id="X_M0' + i + '"></td>';
+                tableHTML += '<td><input type="number" id="X_MN' + i + '"></td>';
+                tableHTML += '</tr>';
+            }
+
+            // Add similar code for buses, transmission lines, and motors
+
+            tableHTML += '</table>';
+            tableContainer.innerHTML = tableHTML;
+
+            
+            var tableContainer1 = document.getElementById("tableContainer1");
+            
+            var tableHTML1 = '<table border="1">';
+            tableHTML1 += '<tr><th>Component</th><th>RESISTANCE (R)</th><th>Reactance(jX)</th><th>0_SEQ_IMP_INFO</th></tr>';
+
+            for (var i = 0; i < numTransmissionLines; i++) {
+        tableHTML1 += '<tr>';
+        tableHTML1 += '<td>TransmissionLines TL' + i + '</td>';
+        tableHTML1 += '<td><input type="number" id="X_TL_R' + i + '"></td>';
+        tableHTML1 += '<td><input type="number" id="X_TL_I' + i + '"></td>';
+        tableHTML1 += '<td><input type="number" id="X_TL0' + i + '"></td>';
+        tableHTML1 += '</tr>';   
+    }
+
+            tableHTML1 += '</table>';
+            tableContainer1.innerHTML = tableHTML1;
+
+
+            var tableContainer7 = document.getElementById("tableContainer7");
+            
+            var tableHTML7 = '<table border="1">';
+            tableHTML7 += '<tr><th>Component</th><th>MVA</th><th>KV</th><th>P.F(WITH SIGN)</th></tr>';
+
+            for (var i = 0; i < numLoad; i++) {
+        tableHTML7 += '<tr>';
+        tableHTML7 += '<td>LOAD L' + i + '</td>';
+        tableHTML7 += '<td><input type="number" id="MVA_L' + i + '"></td>';
+        tableHTML7 += '<td><input type="number" id="KVA_L' + i + '"></td>';
+        tableHTML7 += '<td><input type="number" id="PF_L' + i + '"></td>';
+        tableHTML7 += '</tr>';   
+    }
+
+            tableHTML7 += '</table>';
+            tableContainer7.innerHTML = tableHTML7;
+
+            var tableContainer2 = document.getElementById("tableContainer2");
+            
+            var tableHTML2 = '<table border="1">';
+            tableHTML2 += '<tr><th>Component</th><th>KV_P</th><th>KV_S</th><th>MVA</th><th>Reactance (X)</th></tr>';
+
+            for (var i = 0; i < numTransformers; i++) 
+            {
+                tableHTML2 += '<tr>';
+                tableHTML2 += '<td>Transformer T' + i + '</td>';
+                tableHTML2 += '<td><input type="number" id="KVA_T_P' + i + '"></td>';
+                tableHTML2 += '<td><input type="number" id="KVA_T_S' + i + '"></td>';
+                tableHTML2 += '<td><input type="number" id="MVA_T' + i + '"></td>';
+                tableHTML2 += '<td><input type="number" id="X_T' + i + '"></td>';
+                tableHTML2 += '</tr>';
+            }
+
+            tableHTML2 += '</table>';
+            tableContainer2.innerHTML = tableHTML2;
+            var proceedButton = '<button type="button" onclick="check()" >Proceed</button>';
+            document.getElementById("proceedButton").innerHTML = proceedButton;
+           // document.getElementById('proceedButton').style.backgroundColor='Red';
+        }
+        function check()
+        {
+        var specifyBaseMVA = document.getElementById("specifyBaseMVA").checked;
+
+         if (specifyBaseMVA) 
+         {
+    // Create an input field for the user to enter Base MVA
+       var baseMVAInput = '<label for="baseMVA" style="color: rgb(197, 198, 200);">Enter Base MVA:</label>';
+       //document.getElementById("baseMVA").style.color="red";
+          baseMVAInput += '<input type="number" id="baseMVA" name="baseMVA">';
+          baseMVAInput += '<button type="button" onclick="display_base()">Submit</button>';
+          //fontsDiv.innerHTML = baseMVAInput.fontcolor("green");
+
+      document.getElementById("baseMVAContainer").innerHTML = baseMVAInput;
+          } 
+         else
+        {
+            calculateBase();
+
+         }
+        }
+        function take_value()
+        {     numGenerators = parseInt(document.getElementById("numGenerators").value);
+             numTransformers = parseInt(document.getElementById("numTransformers").value);
+             numMotors=parseInt(document.getElementById("numMotors").value);
+             numTransmissionLines=parseInt(document.getElementById("numTransmissionLines").value);
+            numLoad=parseInt(document.getElementById("numLoad").value);
+            for (var i = 0; i < numGenerators; i++) 
+            {
+                KVA_G[i] = document.getElementById("KVA_G"+i).value;
+                MVA_G[i] = document.getElementById("MVA_G" + i).value;
+                X_G[i] = document.getElementById("X_G" + i).value;
+                X_G0[i] = document.getElementById("X_G0" + i).value;
+                X_GN[i] = document.getElementById("X_GN" + i).value;
+                
+            }
+            for(var i = 0; i < numTransformers; i++)
+            {
+                KVA_T_P[i] = document.getElementById("KVA_T_P" + i).value;
+                KVA_T_S[i] = document.getElementById("KVA_T_S" + i).value;
+                MVA_T[i] = document.getElementById("MVA_T" + i).value;
+                X_T[i] = document.getElementById("X_T" + i).value;
+            }
+            for(var i = 0; i < numMotors; i++)
+            {
+                KVA_M[i] = document.getElementById("KVA_M" + i).value;
+                MVA_M[i] = document.getElementById("MVA_M" + i).value;
+                X_M[i] = document.getElementById("X_M" + i).value;
+                X_M0[i] = document.getElementById("X_M0" + i).value;
+                X_MN[i] = document.getElementById("X_MN" + i).value;
+                
+            }
+            for(var j = 0; j <numTransmissionLines; j++)
+            {
+                X_TL_R[j] = document.getElementById("X_TL_R" + j).value;
+                X_TL_I[j] = document.getElementById("X_TL_I" + j).value;
+                X_TL0[j]=document.getElementById("X_TL0" + j).value;
+            }
+            
+            for(var j = 0; j <numLoad; j++)
+            {
+                MVA_L[j] = document.getElementById("MVA_L" + j).value;
+               KVA_L[j] = document.getElementById("KVA_L" + j).value;
+                PF_L[j]=document.getElementById("PF_L" + j).value;
+            }
+
+
+        }
+
+        function TL_TABLE()
+        {  console.log("Generating table for transmission lines");
+            var tableContainer3 = document.getElementById("tableContainer3");
+            
+            var tableHTML3 = '<table border="1">';
+            tableHTML3 += '<tr><th>Component</th><th>CONECTED FROM</th><th>CONNECTED TO</th></tr>';
+
+            for (var i = 0; i < numTransmissionLines; i++) 
+        {
+        tableHTML3 += '<tr>';
+        tableHTML3 += '<td>TransmissionLines TL' + i + '</td>';
+        
+        tableHTML3 += '<td><select id="CONNECTED_FROM_TL' + i + '">' + getTransformerOptions() + '</select></td>';
+        tableHTML3 += '<td><select id="CONNECTED_TO_TL' + i + '">' + getTransformerOptions() + '</select></td>';
+        tableHTML3 += '</tr>';   
+        }
+           
+            tableHTML3 += '</table>';
+            tableContainer3.innerHTML = tableHTML3;
+            GEN_M_TABLE();
+        }
+
+
+        function GEN_M_TABLE()
+        {  console.log("Generating table for transmission lines");
+            var tableContainer5 = document.getElementById("tableContainer5");
+            
+            var tableHTML5 = '<table border="1">';
+            tableHTML5 += '<tr><th>Component</th><th>CONNECTED TO</th></tr>';
+
+            for (var i = 0; i < numGenerators; i++) 
+        {
+        tableHTML5 += '<tr>';
+        tableHTML5 += '<td>GENERATOR G' + i + '</td>';
+         tableHTML5 += '<td><select id="CONNECTED_TO_GEN' + i + '">' + getTransformerOptions() + '</select></td>';
+        tableHTML5 += '</tr>';   
+        }
+        for (var i = 0; i < numMotors; i++) 
+        {
+        tableHTML5 += '<tr>';
+        tableHTML5 += '<td>MOTOR M' + i + '</td>';
+        tableHTML5 += '<td><select id="CONNECTED_TO_M' + i + '">' + getTransformerOptions() + '</select></td>';
+        tableHTML5 += '</tr>';   
+        }
+        for (var i = 0; i < numLoad; i++) 
+        {
+        tableHTML5 += '<tr>';
+        tableHTML5 += '<td>LOAD L' + i + '</td>';
+        tableHTML5 += '<td><select id="CONNECTED_TO_L' + i + '">' + getTransformerOptions() + '</select></td>';
+        tableHTML5 += '</tr>';   
+        }
+           
+            tableHTML5+= '</table>';
+            tableContainer5.innerHTML = tableHTML5;
+        }
+
+
+        function getTransformerOptions() 
+        {
+    var options = '';
+    for (var i = 0; i < numTransformers; i++) {
+        options += '<option value="T' + i + '">Transformer T' + i + '</option>';
+    }
+    return options;
+}
+
+function calculateConnections() {
+    console.log("Generating table for transmission lines");
+   take_value();
+    for (var i = 0; i < numTransmissionLines; i++) {
+        var connectedFromIndex = document.getElementById("CONNECTED_FROM_TL" + i).selectedIndex;
+        var connectedToIndex = document.getElementById("CONNECTED_TO_TL" + i).selectedIndex;
+        var connectedFromBaseV = Math.max(KVA_T_S[connectedFromIndex], KVA_T_S[connectedToIndex],KVA_T_P[connectedFromIndex], KVA_T_P[connectedToIndex]); // Fix the typo here
+        TL_BASE_V[i] = connectedFromBaseV;
+    }
+
+    var tableContainer4 = document.getElementById("tableContainer4");
+
+    var tableHTML4 = '<table border="1">';
+    tableHTML4 += '<tr><th>Component</th><th>BASE_VOL(X)</th></tr>';
+
+    for (var i = 0; i < numTransmissionLines; i++) {
+        tableHTML4 += '<tr>';
+        tableHTML4 += '<td>TransmissionLines TL' + i + '</td>';
+        
+        tableHTML4 += '<td>' + TL_BASE_V[i] + '</td>';
+        tableHTML4 += '</tr>';
+    }
+
+    tableHTML4 += '</table>';
+    tableContainer4.innerHTML = tableHTML4;
+    cal_base_v();
+}
+ function cal_base_v()
+ { var BASE;
+    var BASE1;
+    var BASE2;
+   
+    for (var i = 0; i < numGenerators; i++) 
+    {
+        
+        var INDEX = document.getElementById("CONNECTED_TO_GEN" + i).selectedIndex;
+        
+        if (KVA_G[i] == KVA_T_P[INDEX]) 
+            {
+                BASE = KVA_G[i];
+            } 
+            else 
+            {
+                BASE = KVA_T_P[INDEX];
+            }
+        G_BASE_V[i] =BASE ;
+    }
+    for (var i = 0; i < numMotors; i++) 
+    {
+        
+        var INDEX1 = document.getElementById("CONNECTED_TO_M" + i).selectedIndex;
+        
+        if (KVA_M[i] == KVA_T_S[INDEX1]) 
+            {
+                BASE1 = KVA_M[i];
+            } 
+            else 
+            {
+                BASE1 = KVA_T_S[INDEX1];
+            }
+        M_BASE_V[i] =BASE1 ;
+    }
+    for (var i = 0; i < numLoad; i++) 
+    {
+        
+        var INDEX2 = document.getElementById("CONNECTED_TO_L" + i).selectedIndex;
+        
+        if (KVA_L[i] == KVA_T_S[INDEX2]) 
+            {
+                BASE2 = KVA_L[i];
+            } 
+            else 
+            {
+                BASE2 = KVA_T_S[INDEX2];
+            }
+        L_BASE_V[i] =BASE2 ;
+    }
+
+    var tableContainer6 = document.getElementById("tableContainer6");
+
+    var tableHTML6 = '<table border="1">';
+    tableHTML6 += '<tr><th>Component</th><th>BASE_VOL(X)</th></tr>';
+
+    for (var i = 0; i < numGenerators; i++)
+     {
+        tableHTML6 += '<tr>';
+        tableHTML6 += '<td>GENERATOR G' + i + '</td>';
+        
+        tableHTML6 += '<td>' + G_BASE_V[i] + '</td>';
+        tableHTML6 += '</tr>';
+    }
+    for (var i = 0; i < numMotors; i++)
+     {
+        tableHTML6 += '<tr>';
+        tableHTML6 += '<td>MOTOR M' + i + '</td>';
+        
+        tableHTML6 += '<td>' + M_BASE_V[i] + '</td>';
+        tableHTML6 += '</tr>';
+    }
+    for (var i = 0; i < numLoad; i++)
+     {
+        tableHTML6 += '<tr>';
+        tableHTML6 += '<td>LOAD L' + i + '</td>';
+        
+        tableHTML6 += '<td>' + L_BASE_V[i] + '</td>';
+        tableHTML6 += '</tr>';
+    }
+
+    tableHTML6 += '</table>';
+    tableContainer6.innerHTML = tableHTML6;
+
+
+    
+
+            
+ }
+
+        
+        function calculateBase()
+         {   var MVA_G_array = [];
+            var MVA_T_array = [];
+            var MVA_M_array = [];
+
+            for (var i = 0; i < numGenerators; i++) {
+            MVA_G_array.push(parseFloat(document.getElementById("MVA_G" + (i)).value));
+         }
+
+        for (var i = 0; i <numTransformers; i++) 
+        {
+        MVA_T_array.push(parseFloat(document.getElementById("MVA_T" + i).value));
+        }
+
+        for (var i = 0; i < numMotors; i++)
+         {
+        MVA_M_array.push(parseFloat(document.getElementById("MVA_M" + i).value));
+        }
+
+        var maxMVA_G = Math.max(...MVA_G_array);
+        var maxMVA_T = Math.max(...MVA_T_array);
+        var maxMVA_M = Math.max(...MVA_M_array);
+
+    var maxMVA_All = Math.max(maxMVA_G, maxMVA_T, maxMVA_M);
+         baseMVA=maxMVA_All;
+
+        // Display the calculated or specified Base MVA
+        var displayBaseMVA = '<p style="color: rgb(197, 198, 200);">Base MVA: ' + maxMVA_All + ' MVA</p>';
+        document.getElementById("displayBaseMVA").innerHTML = displayBaseMVA;
+        }
+
+
+         function display_base() 
+         {
+             baseMVA = parseFloat(document.getElementById("baseMVA").value);
+            var displayBaseMVA = '<p style="color: rgb(197, 198, 200);">Base MVA: ' + baseMVA + ' MVA</p>';
+            document.getElementById("displayBaseMVA").innerHTML = displayBaseMVA;
+        }
+
+        
+        
+
+        function resetForm() 
+        {
+            document.getElementById("tableContainer").innerHTML = '';
+            document.getElementById("tableContainer1").innerHTML = '';
+            document.getElementById("tableContainer2").innerHTML = '';
+            document.getElementById("tableContainer3").innerHTML = '';
+            document.getElementById("tableContainer4").innerHTML = '';
+            document.getElementById("tableContainer5").innerHTML = '';
+            document.getElementById("tableContainer6").innerHTML = '';
+            document.getElementById("tableContainer7").innerHTML = '';
+           
+            document.getElementById("puValues").innerHTML = '';
+            document.getElementById("puValues1").innerHTML = '';
+            document.getElementById("puValues2").innerHTML = '';
+            document.getElementById("puValues3").innerHTML = '';
+            document.getElementById("puValues4").innerHTML = '';
+            
+            document.getElementById("baseMVAContainer").innerHTML = '';
+            document.getElementById("displayBaseMVA").innerHTML = '';
+            document.getElementById("numGenerators").value = '';
+            document.getElementById("numMotors").value = '';
+            document.getElementById("numBuses").value = '';
+            document.getElementById("numTransformers").value = '';
+            document.getElementById("numTransmissionLines").value = '';
+            
+        }
+
+      
+
+        function claculate_pu_g() 
+        {
+            take_value();
+            var puValuesTable = '<table border="1">';
+            puValuesTable += '<tr><th>Generator</th><th>Reactance(PU)(+)</th><th>Reactance(PU)(-)</th><th>Reactance(PU)(X0)</th><th>Reactance(PU)(3XN)</th></tr>';
+
+            for (var i = 0; i < numGenerators; i++) 
+            {
+
+            
+
+            PU_G[i] = ((X_G[i]) *0.01* (((KVA_G[i] * KVA_G[i]) *(baseMVA))/(( MVA_G[i]) * (G_BASE_V[i] * G_BASE_V[i])))).toFixed(4);
+            PU_G_0[i] = ((X_G0[i])*0.01 * (((KVA_G[i] * KVA_G[i]) *(baseMVA))/(( MVA_G[i]) * (G_BASE_V[i] * G_BASE_V[i])))).toFixed(4);
+            PU_G_N[i] = ((X_GN[i])*0.01 * (((KVA_G[i] * KVA_G[i]) *(baseMVA))/(( MVA_G[i]) * (G_BASE_V[i] * G_BASE_V[i])))).toFixed(4);
+            PU_G_N[i]= PU_G_N[i]*3;
+            puValuesTable += '<tr>';
+            puValuesTable += '<td>Generator G' + i + '</td>';
+            puValuesTable += '<td>' + PU_G[i] + '</td>';
+            puValuesTable += '<td>' + PU_G[i] + '</td>';
+            puValuesTable += '<td>' + PU_G_0[i] + '</td>';
+            puValuesTable += '<td>' + PU_G_N[i] + '</td>';
+            puValuesTable += '</tr>';
+            }
+
+    puValuesTable += '</table>';
+    document.getElementById("puValues").innerHTML = puValuesTable;
+    claculate_pu_T() ;
+       }
+       function claculate_pu_T() 
+        {
+            //take_value();
+            var puValuesTable1 = '<table border="1">';
+            puValuesTable1+= '<tr><th>TRANSFORMER</th><th>Reactance(PU)(+)</th><th>Reactance(PU)(-)</th><th>Reactance(PU)(0)</th></tr>';
+
+            for (var i = 0; i < numTransformers; i++) 
+            {
+
+            
+            
+                T_BASE_V[i] = KVA_T_P[i];
+            
+            
+
+            PU_T[i] = (X_T[i])*0.01 * (((KVA_T_P[i] * KVA_T_P[i]) *(baseMVA))/(( MVA_T[i]) * (T_BASE_V[i] * T_BASE_V[i])));
+            PU_T[i] = PU_T[i].toFixed(4);
+            puValuesTable1 += '<tr>';
+            puValuesTable1 += '<td>TRANSFORMER T' + i + '</td>';
+            puValuesTable1 += '<td>' + PU_T[i] + '</td>';
+            puValuesTable1 += '<td>' + PU_T[i] + '</td>';
+            puValuesTable1 += '<td>' + PU_T[i] + '</td>';
+            puValuesTable1 += '</tr>';
+            }
+            
+
+    puValuesTable1 += '</table>';
+    document.getElementById("puValues1").innerHTML = puValuesTable1;
+    claculate_pu_M() ;
+       }
+
+       function claculate_pu_M() 
+        {
+            //take_value();
+            var puValuesTable2 = '<table border="1">';
+            puValuesTable2 += '<tr><th>Generator</th><th>Reactance(PU)(+)</th><th>Reactance(PU)(-)</th><th>Reactance(PU)(X0)</th><th>Reactance(PU)(3XN)</th></tr>';
+
+            for (var i = 0; i < numMotors; i++) 
+            {
+
+            
+
+            PU_M[i] = ((X_M[i])*0.01 * (((KVA_M[i] * KVA_M[i]) *(baseMVA))/(( MVA_M[i]) * (M_BASE_V[i] * M_BASE_V[i])))).toFixed(4);
+            PU_M_0[i] = ((X_M0[i])*0.01 * (((KVA_M[i] * KVA_M[i]) *(baseMVA))/(( MVA_M[i]) * (M_BASE_V[i] * M_BASE_V[i])))).toFixed(4);
+            
+            PU_M_N[i] = ((X_MN[i])*0.01 * (((KVA_M[i] * KVA_M[i]) *(baseMVA))/(( MVA_M[i]) * (M_BASE_V[i] * M_BASE_V[i])))).toFixed(4);
+            PU_M_N[i]=PU_M_N[i]*3;
+            puValuesTable2 += '<tr>';
+            puValuesTable2 += '<td>MOTOR M' + i + '</td>';
+            puValuesTable2 += '<td>' + PU_M[i] + '</td>';
+            puValuesTable2 += '<td>' + PU_M[i] + '</td>';
+            puValuesTable2 += '<td>' + PU_M_0[i] + '</td>';
+            puValuesTable2 += '<td>' + PU_M_N[i] + '</td>';
+            puValuesTable2 += '</tr>';
+            }
+
+    puValuesTable2 += '</table>';
+    document.getElementById("puValues2").innerHTML = puValuesTable2;
+    claculate_pu_TL();
+       }
+
+       function claculate_pu_TL() {
+    //take_value();
+    var puValuesTable3 = '<table border="1">';
+    puValuesTable3 += '<tr><th>Line</th><th>Reactance(PU)(+)</th><th>Reactance(PU)(-)</th><th>Reactance(PU)(0)</th></tr>';
+
+    for (var k = 0; k < numTransmissionLines; k++) 
+    {
+        PU_TL_R[k] = (X_TL_R[k]) * (baseMVA / (TL_BASE_V[k] * TL_BASE_V[k]));
+        PU_TL_I[k] = (X_TL_I[k]) * (baseMVA / (TL_BASE_V[k] * TL_BASE_V[k]));
+        PU_TL_R_Z[k]=PU_TL_R[k] *X_TL0[k];
+        PU_TL_I_Z[k]=PU_TL_I[k] *X_TL0[k];
+        
+        puValuesTable3 += '<tr>';
+        puValuesTable3 += '<td>LINE L' + k + '</td>';
+        puValuesTable3 += '<td>' + PU_TL_R[k].toFixed(4) + ' + ' + PU_TL_I[k].toFixed(4) + 'j</td>';
+        puValuesTable3 += '<td>' + PU_TL_R[k].toFixed(4) + ' + ' + PU_TL_I[k].toFixed(4) + 'j</td>';
+        puValuesTable3 += '<td>' + PU_TL_R_Z[k].toFixed(4) + ' + ' + PU_TL_I_Z[k].toFixed(4) + 'j</td>';
+        puValuesTable3 += '</tr>';
+    }
+
+    puValuesTable3 += '</table>';
+    document.getElementById("puValues3").innerHTML = puValuesTable3;
+    claculate_pu_L() ;
+}
+function claculate_pu_L() 
+        {
+            //take_value();
+            var pf;
+            var real;
+            var imag;
+            var den;
+            var imp_real=[];
+            var imp_imag=[];
+            var base_imp=[];
+            var puValuesTable4 = '<table border="1">';
+            puValuesTable4 += '<tr><th>LOAD</th><th>Reactance(PU)(+)</th><th>Reactance(PU)(-)</th><th>Reactance(PU)(X0)</th><th>Reactance(PU)(3XN)</th></tr>';
+
+            for (var i = 0; i < numLoad; i++) 
+            {
+                pf=Math.acos(PF_L[i]);
+                real=(MVA_L[i])* (Math.cos(pf));
+                imag=(MVA_L[i])* (Math.sin(pf));
+                den=(real*real) + (imag*imag);
+                imp_real[i]=((KVA_L[i]*KVA_L[i])*real)/den;
+                imp_imag[i]=-((KVA_L[i]*KVA_L[i])*imag)/den;
+                base_imp[i]=((L_BASE_V[i]*L_BASE_V[i]))/baseMVA;
+                PU_L_R[i]=(imp_real[i])/(base_imp[i]);
+                PU_L_I[i]=(imp_imag[i])/(base_imp[i]);
+                
+
+            
+
+            
+            puValuesTable4 += '<tr>';
+            puValuesTable4 += '<td>LOAD L' + i + '</td>';
+            puValuesTable4 += '<td>' + PU_L_R[i].toFixed(6) + ' + (' + PU_L_I[i].toFixed(6) + ')j</td>';
+            puValuesTable4 += '<td>' + PU_L_R[i].toFixed(6) + ' + (' + PU_L_I[i].toFixed(6) + ')j</td>';
+            puValuesTable4 += '<td>' + PU_L_R[i].toFixed(4) + ' + (' + PU_L_I[i].toFixed(4) + ')j</td>';
+            puValuesTable4 += '</tr>';
+            }
+
+    puValuesTable4 += '</table>';
+    document.getElementById("puValues4").innerHTML = puValuesTable4;
+    
+       }
+
+  
+
+        
+    </script>
+
+</body>
+</html>
